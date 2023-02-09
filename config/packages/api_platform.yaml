@@ -1,8 +1,21 @@
 api_platform:
-    metadata_backward_compatibility_layer: false
+    title: 'ElKarmeletAPI'
+    description: 'ElKarmelet API'
+    version: 1.0.0
     mapping:
         paths: ['%kernel.project_dir%/src/Entity']
+
     patch_formats:
         json: ['application/merge-patch+json']
+
+
+    formats:
+        json:
+            mime_types: [ 'application/json' ]
+        html:
+            mime_types: ['text/html']
+
     swagger:
         versions: [3]
+
+    metadata_backward_compatibility_layer: false

@@ -2,6 +2,10 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ItemRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -11,6 +15,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ItemRepository::class)]
 #[ApiResource]
+#[ApiFilter(filterClass: RangeFilter::class, properties: ['price'=>'start'])]
+#[ApiFilter(filterClass: OrderFilter::class,properties:['price'=>'partial','category_id'=>'exact'],arguments: ['orderParameterName' => 'order'])]
+#[ApiFilter(filterClass: SearchFilter::class,properties: ['price'=>'start','id'=>'exact',
+    'category_id'=>'exact','name'=>'start','description'=>'partial'])]
 class Item
 {
     #[ORM\Id]

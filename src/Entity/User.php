@@ -3,6 +3,9 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -17,7 +20,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\UniqueConstraint(name: 'idx_username',columns: ['username'])]
 #[UniqueEntity(fields: ['username'], message: 'Ya existe alguien con ese usuario')]
 #[UniqueEntity(fields: ['email'], message: 'Ya existe alguien con ese email')]
-#[ApiResource]
+#[ApiResource(
+    operations: [
+        new Get(),
+        new GetCollection()
+    ]
+)]
 class User implements UserInterface ,PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
