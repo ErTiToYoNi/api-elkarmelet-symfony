@@ -9,6 +9,7 @@ use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
@@ -16,7 +17,9 @@ use Symfony\Component\Validator\Constraints as Assert;
     operations: [
         new Get(),
         new GetCollection()
-    ]
+    ],
+    normalizationContext: ['groups' => ['category:read']],
+    denormalizationContext: ['groups' => ['category:write']],
 )]
 class Category
 {
@@ -27,16 +30,20 @@ class Category
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'Este campo no puede estar vacio')]
+    #[Groups(['category:read'])]
     private ?string $name = null;
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Item::class)]
+    #[Groups(['category:read'])]
     private Collection $items;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['category:read'])]
     private ?string $image = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'Este campo no puede estar vacio')]
+    #[Groups(['category:read'])]
     private ?string $url = null;
 
     public function __construct()

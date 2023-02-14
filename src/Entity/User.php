@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -24,7 +25,9 @@ use Symfony\Component\Validator\Constraints as Assert;
     operations: [
         new Get(),
         new GetCollection()
-    ]
+    ],
+    normalizationContext: ['groups' => ['user:read']],
+    denormalizationContext: ['groups' => ['user:write']],
 )]
 class User implements UserInterface ,PasswordAuthenticatedUserInterface
 {
@@ -41,6 +44,7 @@ class User implements UserInterface ,PasswordAuthenticatedUserInterface
         minMessage: 'Tu nombre debe tener al menos {{ limit }} caracteres ',
         maxMessage: 'Tu nombre no puede tener más de {{ limit }} caracteres',
     )]
+    #[Groups(['user:read'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
@@ -48,6 +52,7 @@ class User implements UserInterface ,PasswordAuthenticatedUserInterface
     #[Assert\Email(
         message: 'El email {{ value }} no es un email valido',
     )]
+    #[Groups(['user:read'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
@@ -68,6 +73,7 @@ class User implements UserInterface ,PasswordAuthenticatedUserInterface
         minMessage: 'El numero de telefono es muy corto ',
         maxMessage: 'l numero de telefono es muy largo',
     )]
+    #[Groups(['user:read'])]
     private ?string $phoneNumber = null;
 
     #[ORM\Column(length: 50)]
@@ -82,6 +88,7 @@ class User implements UserInterface ,PasswordAuthenticatedUserInterface
         minMessage: 'Tu nombre debe tener al menos {{ limit }} caracteres ',
         maxMessage: 'Tu nombre no puede tener más de {{ limit }} caracteres',
     )]
+    #[Groups(['user:read'])]
     private ?string $username = null;
 
     public function __construct()

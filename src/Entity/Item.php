@@ -11,10 +11,14 @@ use App\Repository\ItemRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ItemRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['item:read']],
+    denormalizationContext: ['groups' => ['item:write']],
+)]
 #[ApiFilter(filterClass: RangeFilter::class, properties: ['price'=>'start'])]
 #[ApiFilter(filterClass: OrderFilter::class,properties:['price'=>'partial','category_id'=>'exact'],arguments: ['orderParameterName' => 'order'])]
 #[ApiFilter(filterClass: SearchFilter::class,properties: ['price'=>'start','id'=>'exact',
@@ -34,6 +38,7 @@ class Item
         minMessage: 'El nombre del producto debe tener al menos {{ limit }} caracteres ',
         maxMessage: 'El nombre del producto no puede tener más de {{ limit }} caracteres',
     )]
+    #[Groups(['item:read', 'item:write'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 500)]
@@ -44,6 +49,7 @@ class Item
         minMessage: 'La descripcion del producto debe tener al menos {{ limit }} caracteres ',
         maxMessage: 'La descripcion del producto no puede tener más de {{ limit }} caracteres',
     )]
+    #[Groups(['item:read', 'item:write'])]
     private ?string $description = null;
 
     #[ORM\Column]
@@ -53,10 +59,12 @@ class Item
         message: 'El valor {{ value }} no es valido {{ type }}.',
     )]
     #[Assert\Positive]
+    #[Groups(['item:read', 'item:write'])]
     private ?float $price = null;
 
     #[ORM\ManyToOne(inversedBy: 'items')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['item:read', 'item:write'])]
     private ?Category $category = null;
 
 

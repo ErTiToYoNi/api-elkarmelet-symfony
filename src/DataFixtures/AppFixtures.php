@@ -4,10 +4,10 @@ namespace App\DataFixtures;
 
 use App\Entity\Category;
 use App\Entity\Item;
-use App\Entity\Menu;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Faker\Factory;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
@@ -101,12 +101,13 @@ class AppFixtures extends Fixture
         $categorias[] = $categoria;
         $manager->persist($categoria);
 
+        $faker = Factory::create("es_ES");
         foreach ($categorias as $categoria){
             for($i=0 ;$i<30;$i++){
                 $item= new Item();
-                $item->setDescription("Las gambas, como otros mariscos son alimentos fuente de proteínas de calidad ante todo. En este caso también se trata de una opción muy reducida en grasas aunque dentro de estas predominan los ácidos grasos poliinsturados y sobre todo, el omega 3.");
-                $item->setName('Gambas alajillo');
-                $item->setPrice(10.22);
+                $item->setDescription($faker->text(255));
+                $item->setName($faker->word());
+                $item->setPrice($faker->randomFloat(2,0,200));
                 $item->setCategory($categoria);
                 $manager->persist($item);
             }
