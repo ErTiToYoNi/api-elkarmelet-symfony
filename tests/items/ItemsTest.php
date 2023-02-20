@@ -100,7 +100,27 @@ class ItemsTest extends ApiTestCase
 
         $data = $response->toArray();
         //sprintf('Bearer %s', $data['token']));
-
         return static::createClient([],['auth_bearer'=> $data['token']]);
+    }
+
+    public function testPostInvalidData(): void
+    {
+
+        //$this->expectException(UnexpectedValueException::class);
+        $userRepository = static::getContainer()->get(UserRepository::class);
+        $user = $userRepository->findOneBy(["username" => "user"]);
+
+        $response = $this->client->request('POST', '/api/items',
+            [
+                'headers' => ["Accept: application/json","Authorization: Bearer ".$this->token],
+                'json' => [
+                    'name' => 'Lomo',
+                    "description"=> "Lomo embuchado",
+                    "price"=> 1,
+                    'category' => '/api/categories/1923'
+                ]
+            ]
+        );
+        $this->assertResponseStatusCodeSame(400);
     }
 }
