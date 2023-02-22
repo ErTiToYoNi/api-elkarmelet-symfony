@@ -66,7 +66,47 @@ class Item
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['item:read', 'item:write'])]
     private ?Category $category = null;
+    #[ORM\Column(length: 500)]
+    #[Assert\NotBlank(message: 'Este campo no puede estar vacio')]
+    #[Groups(['item:read', 'item:write'])]
+    private ?array $alergenos = null;
 
+    /**
+     * @return array|null
+     */
+    public function getAlergenos(): ?array
+    {
+        return $this->alergenos;
+    }
+
+    /**
+     * @param array|null $alergenos
+     */
+    public function setAlergenos(?array $alergenos): void
+    {
+        $this->alergenos = $alergenos;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getImg(): ?string
+    {
+        return $this->img;
+    }
+
+    /**
+     * @param string|null $img
+     */
+    public function setImg(?string $img): void
+    {
+        $this->img = $img;
+    }
+
+    #[ORM\Column(length: 500)]
+    #[Assert\NotBlank(message: 'Este campo no puede estar vacio')]
+    #[Groups(['item:read', 'item:write'])]
+    private ?string $img = null;
 
     public function __construct()
     {

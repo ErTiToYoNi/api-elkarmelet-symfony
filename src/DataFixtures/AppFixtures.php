@@ -101,6 +101,7 @@ class AppFixtures extends Fixture
         $categorias[] = $categoria;
         $manager->persist($categoria);
 
+        $alergenos = ["Trigo","Marisco"];
         $faker = Factory::create("es_ES");
         foreach ($categorias as $categoria){
             for($i=0 ;$i<30;$i++){
@@ -109,6 +110,8 @@ class AppFixtures extends Fixture
                 $item->setName($faker->word());
                 $item->setPrice($faker->randomFloat(2,0,200));
                 $item->setCategory($categoria);
+                $item->setAlergenos($alergenos);
+                $item->setImg("Plato1.png");
                 $manager->persist($item);
             }
         }
