@@ -28,7 +28,7 @@ class Item
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['item:read', 'item:write'])]
+    #[Groups(['item:read','categoria:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]

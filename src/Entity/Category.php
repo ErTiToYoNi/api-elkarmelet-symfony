@@ -31,7 +31,7 @@ class Category
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'Este campo no puede estar vacio')]
-    #[Groups(['category:read'])]
+    #[Groups(['category:read',"item:read"])]
     private ?string $name = null;
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Item::class)]
