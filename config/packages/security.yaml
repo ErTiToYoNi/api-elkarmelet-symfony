@@ -37,6 +37,7 @@ security:
         - { path: ^/login, roles: PUBLIC_ACCESS, } # Allows accessing login controller
         - { path: ^/api$, roles: PUBLIC_ACCESS } # Allows accessing the doc
         - { path: ^/api/items, roles: PUBLIC_ACCESS, methods:['GET']}
+        - { path: ^/api/categories, roles: PUBLIC_ACCESS, methods:['GET']}
         - { path: ^/api/items, roles: IS_AUTHENTICATED_FULLY, methods:['POST']}
         - { path: ^/, roles: IS_AUTHENTICATED_FULLY } # Forces authentication in all the requests
 
